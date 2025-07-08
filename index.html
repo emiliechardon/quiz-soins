@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Quel soin est fait pour toi ? 🌺</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 50%, #fd79a8 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #2d3436;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            color: #636e72;
+            font-size: 1.2em;
+            font-style: italic;
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .question-container.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .question {
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .answers {
+            display: grid;
+            gap: 15px;
+        }
+
+        .answer {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-size: 1em;
+        }
+
+        .answer:hover {
+            border-color: #fd79a8;
+            background: #ffeaa7;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .answer.selected {
+            border-color: #6c5ce7;
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            color: white;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #ddd;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #fd79a8, #fdcb6e);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #fd79a8, #fdcb6e);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .result {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #00cec9, #55a3ff);
+            color: white;
+            border-radius: 20px;
+            margin-top: 30px;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .result p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .result-details {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .cta-button {
+            background: white;
+            color: #2d3436;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 10px;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .restart-btn {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            margin-top: 20px;
+        }
+
+        .restart-btn:hover {
+            background: white;
+            color: #2d3436;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .question {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌺 Quel soin est fait pour toi ? 🌺</h1>
+            <p>Découvre le soin qui correspond à tes besoins du moment</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div id="quiz-container"></div>
+
+        <div class="navigation">
+            <button class="btn" id="prevBtn" onclick="previousQuestion()" disabled>Précédent</button>
+            <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>Suivant</button>
+        </div>
+
+        <div id="result" class="result">
+            <h2 id="resultTitle"></h2>
+            <p id="resultDescription"></p>
+            <div class="result-details" id="resultDetails"></div>
+            <div id="ctaButtons"></div>
+            <button class="btn restart-btn" onclick="restartQuiz()">Recommencer le quiz</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Comment décrirais-tu ton rapport aux soins du visage ?",
+                answers: [
+                    { text: "Je découvre l'univers des soins holistiques", value: "debutant" },
+                    { text: "J'aime les soins naturels et la reconnexion à soi", value: "naturel" },
+                    { text: "Je privilégie l'efficacité et les résultats visibles", value: "resultat" },
+                    { text: "Je cherche la détente profonde avant tout", value: "detente" }
+                ]
+            },
+            {
+                question: "Quel est ton principal besoin en ce moment ?",
+                answers: [
+                    { text: "Purifier ma peau et retrouver de l'éclat", value: "purification" },
+                    { text: "Déstresser et apaiser mon système nerveux", value: "stress" },
+                    { text: "Raffermir et lifter naturellement mon visage", value: "antiage" },
+                    { text: "Libérer les tensions de tout mon corps", value: "corps" }
+                ]
+            },
+            {
+                question: "À quel niveau situes-tu tes tensions ?",
+                answers: [
+                    { text: "Dans ma tête, j'ai du mal à déconnecter", value: "mental" },
+                    { text: "Dans mon corps, dos, nuque, mâchoires", value: "physique" },
+                    { text: "Partout, je suis très nerveuse", value: "nerveux" },
+                    { text: "Plutôt dans l'énergie, je me sens dispersée", value: "energie" }
+                ]
+            },
+            {
+                question: "Quelle approche te correspond le mieux ?",
+                answers: [
+                    { text: "Douceur absolue et sécurité", value: "douceur" },
+                    { text: "Technique ancestrale et savoir-faire", value: "ancestral" },
+                    { text: "Innovation et création unique", value: "innovation" },
+                    { text: "Soin de la peau avec des actifs", value: "skincare" }
+                ]
+            },
+            {
+                question: "Combien de temps veux-tu consacrer à ton soin ?",
+                answers: [
+                    { text: "Pas trop long, 50min-1h maximum", value: "court" },
+                    { text: "Un bon moment pour moi, 1h15-1h20", value: "moyen" },
+                    { text: "Je veux prendre le temps, 1h30", value: "long" },
+                    { text: "Peu importe, ce qui me convient le mieux", value: "flexible" }
+                ]
+            },
+            {
+                question: "Quel budget es-tu prête à investir ?",
+                answers: [
+                    { text: "Autour de 90-110€", value: "economique" },
+                    { text: "Jusqu'à 120€", value: "moyen" },
+                    { text: "Je peux aller jusqu'à 130-145€", value: "premium" },
+                    { text: "Le prix importe moins que le résultat", value: "qualite" }
+                ]
+            }
+        ];
+
+        const results = {
+            kobido: {
+                title: "Kobido - L'art ancestral japonais 🌸",
+                description: "Le soin parfait pour découvrir l'univers du kobido ! Cette technique ancestrale allie tonicité et douceur pour travailler les énergies yin et yang de ton visage.",
+                details: "1h • 90€ • Massage visage et buste drainant et liftant • Résultat : visage reposé et repulpé, système nerveux apaisé",
+                cta: "Réserver mon Kobido"
+            },
+            kobidoPremium: {
+                title: "Kobido Premium - Le travail en profondeur 🌟",
+                description: "Pour aller plus loin dans l'art du kobido ! Un travail encore plus profond pour des résultats optimaux sur ton visage et ton bien-être.",
+                details: "1h20 • 120€ • Technique kobido approfondie • Idéal pour un effet anti-âge naturel plus marqué",
+                cta: "Réserver mon Kobido Premium"
+            },
+            kobidoBrush: {
+                title: "Kobido Brush Lymphatic - La douceur absolue 🌙",
+                description: "Le soin parfait si tu cherches la douceur et la sécurité ! Les caresses des pinceaux créent une connexion lymphatique très apaisante.",
+                details: "1h30 • 110€ • Drainage doux aux pinceaux puis kobido • Sensation sécurisante et profondément relaxante",
+                cta: "Réserver mon Kobido Brush"
+            },
+            deepFace: {
+                title: "Deep Face - Ma création unique 💎",
+                description: "Mon soin signature pour un relâchement total ! Je travaille tout ton corps (dos, nuque, crâne) avec massage intra-buccal pour libérer les tensions profondes.",
+                details: "1h15 • 130€ • Massage corps + visage + intra-buccal + crâne • Idéal pour les personnes très nerveuses",
+                cta: "Réserver mon Deep Face"
+            },
+            holiPure: {
+                title: "HoliPure - Reconnexion et pureté 🌺",
+                description: "Le seul soin avec skin care naturelle ! Parfait pour te reconnecter à ton corps et découvrir mon univers holistique en douceur.",
+                details: "1h30 • 120€ • Skin care + massage visage/crâne + bain sonore • Spécial été pour purifier et révéler ton glow",
+                cta: "Réserver mon HoliPure"
+            },
+            comboEnergetique: {
+                title: "Combo Énergétique Corps Visage ✨",
+                description: "Mon seul soin corps ! Pour libérer ton énergie en passant par le corps, avec un drainage complet et un kobido pour ancrer le tout.",
+                details: "1h30 • 145€ • 1h massage corps + 30min kobido • Sensation de légèreté et détente complète",
+                cta: "Réserver mon Combo"
+            },
+            skinRepair: {
+                title: "Skin Repair - Le soin traitant 🔬",
+                description: "Mon seul soin 100% peau ! Avec derma pen pour hydrater en profondeur, lisser et stimuler la production de collagène.",
+                details: "50min • 120€ • Soin traitant sans massage • À partir de 35 ans, idéal automne/hiver",
+                cta: "Réserver mon Skin Repair"
+            }
+        };
+
+        let currentQuestion = 0;
+        let answers = [];
+
+        function displayQuestion() {
+            const container = document.getElementById('quiz-container');
+            const question = questions[currentQuestion];
+            
+            container.innerHTML = `
+                <div class="question-container active">
+                    <div class="question">${question.question}</div>
+                    <div class="answers">
+                        ${question.answers.map((answer, index) => `
+                            <div class="answer" onclick="selectAnswer(${index}, '${answer.value}')" data-index="${index}">
+                                ${answer.text}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            updateProgress();
+            updateButtons();
+        }
+
+        function selectAnswer(index, value) {
+            const answerElements = document.querySelectorAll('.answer');
+            answerElements.forEach(el => el.classList.remove('selected'));
+            answerElements[index].classList.add('selected');
+            
+            answers[currentQuestion] = value;
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                displayQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                displayQuestion();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function updateButtons() {
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            document.getElementById('nextBtn').disabled = !answers[currentQuestion];
+            
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('nextBtn').textContent = 'Voir mon résultat';
+            } else {
+                document.getElementById('nextBtn').textContent = 'Suivant';
+            }
+        }
+
+        function calculateResult() {
+            // Système de scoring pour déterminer le soin optimal
+            const scores = {
+                kobido: 0,
+                kobidoPremium: 0,
+                kobidoBrush: 0,
+                deepFace: 0,
+                holiPure: 0,
+                comboEnergetique: 0,
+                skinRepair: 0
+            };
+
+            // Question 1: Rapport aux soins
+            if (answers[0] === 'debutant') {
+                scores.holiPure += 3;
+                scores.kobido += 2;
+            } else if (answers[0] === 'naturel') {
+                scores.holiPure += 3;
+                scores.kobidoBrush += 2;
+            } else if (answers[0] === 'resultat') {
+                scores.skinRepair += 3;
+                scores.deepFace += 2;
+                scores.kobidoPremium += 2;
+            } else if (answers[0] === 'detente') {
+                scores.kobidoBrush += 3;
+                scores.comboEnergetique += 2;
+            }
+
+            // Question 2: Besoin principal
+            if (answers[1] === 'purification') {
+                scores.holiPure += 3;
+                scores.skinRepair += 2;
+            } else if (answers[1] === 'stress') {
+                scores.kobidoBrush += 3;
+                scores.deepFace += 2;
+            } else if (answers[1] === 'antiage') {
+                scores.kobidoPremium += 3;
+                scores.deepFace += 2;
+                scores.skinRepair += 2;
+            } else if (answers[1] === 'corps') {
+                scores.comboEnergetique += 3;
+                scores.deepFace += 1;
+            }
+
+            // Question 3: Niveau de tensions
+            if (answers[2] === 'mental') {
+                scores.holiPure += 2;
+                scores.kobidoBrush += 2;
+            } else if (answers[2] === 'physique') {
+                scores.deepFace += 3;
+                scores.comboEnergetique += 2;
+            } else if (answers[2] === 'nerveux') {
+                scores.deepFace += 3;
+                scores.kobidoBrush += 2;
+            } else if (answers[2] === 'energie') {
+                scores.holiPure += 2;
+                scores.comboEnergetique += 2;
+            }
+
+            // Question 4: Approche
+            if (answers[3] === 'douceur') {
+                scores.kobidoBrush += 3;
+                scores.holiPure += 1;
+            } else if (answers[3] === 'ancestral') {
