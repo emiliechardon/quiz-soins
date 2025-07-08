@@ -5,19 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz - Quel soin est fait pour toi ? 🌺</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Georgia', serif;
             background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 50%, #fd79a8 100%);
             min-height: 100vh;
             padding: 20px;
         }
-
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -25,39 +19,11 @@
             border-radius: 20px;
             padding: 40px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
         }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .header h1 {
-            color: #2d3436;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .header p {
-            color: #636e72;
-            font-size: 1.2em;
-            font-style: italic;
-        }
-
-        .question-container {
-            margin-bottom: 30px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
-        }
-
-        .question-container.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { color: #2d3436; font-size: 2.5em; margin-bottom: 10px; }
+        .header p { color: #636e72; font-size: 1.2em; font-style: italic; }
+        .question-container { margin-bottom: 30px; }
         .question {
             background: linear-gradient(135deg, #a29bfe, #6c5ce7);
             color: white;
@@ -66,14 +32,8 @@
             margin-bottom: 20px;
             font-size: 1.1em;
             text-align: center;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
         }
-
-        .answers {
-            display: grid;
-            gap: 15px;
-        }
-
+        .answers { display: grid; gap: 15px; }
         .answer {
             background: white;
             border: 2px solid #ddd;
@@ -81,46 +41,35 @@
             padding: 15px 20px;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            font-size: 1em;
         }
-
         .answer:hover {
             border-color: #fd79a8;
             background: #ffeaa7;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-
         .answer.selected {
             border-color: #6c5ce7;
             background: linear-gradient(135deg, #a29bfe, #6c5ce7);
             color: white;
         }
-
         .progress-bar {
             width: 100%;
             height: 8px;
             background: #ddd;
             border-radius: 4px;
             margin-bottom: 30px;
-            overflow: hidden;
         }
-
         .progress {
             height: 100%;
             background: linear-gradient(90deg, #fd79a8, #fdcb6e);
             width: 0%;
             transition: width 0.3s ease;
         }
-
         .navigation {
             display: flex;
             justify-content: space-between;
             margin-top: 30px;
         }
-
         .btn {
             background: linear-gradient(135deg, #fd79a8, #fdcb6e);
             color: white;
@@ -131,20 +80,8 @@
             font-size: 1em;
             font-weight: bold;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .result {
             text-align: center;
             padding: 40px;
@@ -154,42 +91,15 @@
             margin-top: 30px;
             display: none;
         }
-
-        .result.show {
-            display: block;
-            animation: slideIn 0.5s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .result h2 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .result p {
-            font-size: 1.2em;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
+        .result.show { display: block; }
+        .result h2 { font-size: 2.5em; margin-bottom: 20px; }
+        .result p { font-size: 1.2em; line-height: 1.6; margin-bottom: 20px; }
         .result-details {
             background: rgba(255,255,255,0.2);
             padding: 20px;
             border-radius: 15px;
             margin: 20px 0;
         }
-
         .cta-button {
             background: white;
             color: #2d3436;
@@ -199,41 +109,11 @@
             font-size: 1.1em;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             margin: 10px;
         }
-
-        .cta-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        }
-
-        .restart-btn {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-            margin-top: 20px;
-        }
-
-        .restart-btn:hover {
-            background: white;
-            color: #2d3436;
-        }
-
         @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-            
-            .header h1 {
-                font-size: 2em;
-            }
-            
-            .question {
-                font-size: 1em;
-            }
+            .container { padding: 20px; }
+            .header h1 { font-size: 2em; }
         }
     </style>
 </head>
@@ -260,7 +140,7 @@
             <p id="resultDescription"></p>
             <div class="result-details" id="resultDetails"></div>
             <div id="ctaButtons"></div>
-            <button class="btn restart-btn" onclick="restartQuiz()">Recommencer le quiz</button>
+            <button class="btn" onclick="restartQuiz()" style="background: transparent; border: 2px solid white; margin-top: 20px;">Recommencer</button>
         </div>
     </div>
 
@@ -375,18 +255,17 @@
             const question = questions[currentQuestion];
             
             container.innerHTML = `
-                <div class="question-container active">
+                <div class="question-container">
                     <div class="question">${question.question}</div>
                     <div class="answers">
                         ${question.answers.map((answer, index) => `
-                            <div class="answer" onclick="selectAnswer(${index}, '${answer.value}')" data-index="${index}">
+                            <div class="answer" onclick="selectAnswer(${index}, '${answer.value}')">
                                 ${answer.text}
                             </div>
                         `).join('')}
                     </div>
                 </div>
             `;
-
             updateProgress();
             updateButtons();
         }
@@ -397,7 +276,7 @@
             answerElements[index].classList.add('selected');
             
             answers[currentQuestion] = value;
-            document.getElementById('nextBtn').disabled = false;
+            updateButtons();
         }
 
         function nextQuestion() {
@@ -423,7 +302,7 @@
 
         function updateButtons() {
             document.getElementById('prevBtn').disabled = currentQuestion === 0;
-            document.getElementById('nextBtn').disabled = answers[currentQuestion] === undefined;
+            document.getElementById('nextBtn').disabled = !answers[currentQuestion];
             
             if (currentQuestion === questions.length - 1) {
                 document.getElementById('nextBtn').textContent = 'Voir mon résultat';
@@ -433,66 +312,69 @@
         }
 
         function calculateResult() {
-            // Système de scoring pour déterminer le soin optimal
             const scores = {
-                kobido: 0,
-                kobidoPremium: 0,
-                kobidoBrush: 0,
-                deepFace: 0,
-                holiPure: 0,
-                comboEnergetique: 0,
-                skinRepair: 0
+                kobido: 0, kobidoPremium: 0, kobidoBrush: 0, deepFace: 0,
+                holiPure: 0, comboEnergetique: 0, skinRepair: 0
             };
 
-            // Question 1: Rapport aux soins
-            if (answers[0] === 'debutant') {
-                scores.holiPure += 3;
-                scores.kobido += 2;
-            } else if (answers[0] === 'naturel') {
-                scores.holiPure += 3;
-                scores.kobidoBrush += 2;
-            } else if (answers[0] === 'resultat') {
-                scores.skinRepair += 3;
-                scores.deepFace += 2;
-                scores.kobidoPremium += 2;
-            } else if (answers[0] === 'detente') {
-                scores.kobidoBrush += 3;
-                scores.comboEnergetique += 2;
-            }
+            if (answers[0] === 'debutant') { scores.holiPure += 3; scores.kobido += 2; }
+            else if (answers[0] === 'naturel') { scores.holiPure += 3; scores.kobidoBrush += 2; }
+            else if (answers[0] === 'resultat') { scores.skinRepair += 3; scores.deepFace += 2; scores.kobidoPremium += 2; }
+            else if (answers[0] === 'detente') { scores.kobidoBrush += 3; scores.comboEnergetique += 2; }
 
-            // Question 2: Besoin principal
-            if (answers[1] === 'purification') {
-                scores.holiPure += 3;
-                scores.skinRepair += 2;
-            } else if (answers[1] === 'stress') {
-                scores.kobidoBrush += 3;
-                scores.deepFace += 2;
-            } else if (answers[1] === 'antiage') {
-                scores.kobidoPremium += 3;
-                scores.deepFace += 2;
-                scores.skinRepair += 2;
-            } else if (answers[1] === 'corps') {
-                scores.comboEnergetique += 3;
-                scores.deepFace += 1;
-            }
+            if (answers[1] === 'purification') { scores.holiPure += 3; scores.skinRepair += 2; }
+            else if (answers[1] === 'stress') { scores.kobidoBrush += 3; scores.deepFace += 2; }
+            else if (answers[1] === 'antiage') { scores.kobidoPremium += 3; scores.deepFace += 2; scores.skinRepair += 2; }
+            else if (answers[1] === 'corps') { scores.comboEnergetique += 3; scores.deepFace += 1; }
 
-            // Question 3: Niveau de tensions
-            if (answers[2] === 'mental') {
-                scores.holiPure += 2;
-                scores.kobidoBrush += 2;
-            } else if (answers[2] === 'physique') {
-                scores.deepFace += 3;
-                scores.comboEnergetique += 2;
-            } else if (answers[2] === 'nerveux') {
-                scores.deepFace += 3;
-                scores.kobidoBrush += 2;
-            } else if (answers[2] === 'energie') {
-                scores.holiPure += 2;
-                scores.comboEnergetique += 2;
-            }
+            if (answers[2] === 'mental') { scores.holiPure += 2; scores.kobidoBrush += 2; }
+            else if (answers[2] === 'physique') { scores.deepFace += 3; scores.comboEnergetique += 2; }
+            else if (answers[2] === 'nerveux') { scores.deepFace += 3; scores.kobidoBrush += 2; }
+            else if (answers[2] === 'energie') { scores.holiPure += 2; scores.comboEnergetique += 2; }
 
-            // Question 4: Approche
-            if (answers[3] === 'douceur') {
-                scores.kobidoBrush += 3;
-                scores.holiPure += 1;
-            } else if (answers[3] === 'ancestral') {
+            if (answers[3] === 'douceur') { scores.kobidoBrush += 3; scores.holiPure += 1; }
+            else if (answers[3] === 'ancestral') { scores.kobido += 3; scores.kobidoPremium += 2; }
+            else if (answers[3] === 'innovation') { scores.deepFace += 3; scores.holiPure += 1; }
+            else if (answers[3] === 'skincare') { scores.skinRepair += 3; scores.holiPure += 2; }
+
+            if (answers[4] === 'court') { scores.kobido += 2; scores.skinRepair += 3; }
+            else if (answers[4] === 'moyen') { scores.kobidoPremium += 2; scores.deepFace += 2; }
+            else if (answers[4] === 'long') { scores.kobidoBrush += 2; scores.holiPure += 2; scores.comboEnergetique += 2; }
+
+            if (answers[5] === 'economique') { scores.kobido += 2; scores.kobidoBrush += 1; }
+            else if (answers[5] === 'moyen') { scores.kobidoPremium += 2; scores.holiPure += 2; scores.skinRepair += 2; }
+            else if (answers[5] === 'premium') { scores.deepFace += 2; scores.comboEnergetique += 2; }
+
+            const winnerKey = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+            return [winnerKey];
+        }
+
+        function showResult() {
+            const recommendedSoins = calculateResult();
+            const winner = results[recommendedSoins[0]];
+
+            document.getElementById('resultTitle').textContent = winner.title;
+            document.getElementById('resultDescription').textContent = winner.description;
+            document.getElementById('resultDetails').textContent = winner.details;
+            
+            document.getElementById('ctaButtons').innerHTML = 
+                `<button class="cta-button" onclick="window.open('https://instagram.com/_emiliechardon', '_blank')">${winner.cta}</button>`;
+            
+            document.getElementById('quiz-container').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+            document.getElementById('result').classList.add('show');
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            answers = [];
+            document.getElementById('quiz-container').style.display = 'block';
+            document.querySelector('.navigation').style.display = 'flex';
+            document.getElementById('result').classList.remove('show');
+            displayQuestion();
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>
