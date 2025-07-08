@@ -423,7 +423,7 @@
 
         function updateButtons() {
             document.getElementById('prevBtn').disabled = currentQuestion === 0;
-            document.getElementById('nextBtn').disabled = !answers[currentQuestion];
+            document.getElementById('nextBtn').disabled = answers[currentQuestion] === undefined;
             
             if (currentQuestion === questions.length - 1) {
                 document.getElementById('nextBtn').textContent = 'Voir mon résultat';
